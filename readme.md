@@ -1,6 +1,8 @@
 A Wavenet For Speech Denoising
 ====
 
+ALTERNATIVE (newer): https://github.com/francoisgermain/SpeechDenoisingWithDeepFeatureLosses
+
 A neural network for end-to-end speech denoising, as described in: "[A Wavenet For Speech Denoising](https://arxiv.org/abs/1706.07162)"
 
 Listen to denoised samples under varying noise conditions and SNRs [here](http://www.jordipons.me/apps/speech-denoising-wavenet/)
@@ -29,6 +31,15 @@ docker-compose up -d
 docker exec -it speech-denoising-wavenet bash
 ```
 
+On a mac:
+
+```zsh
+/Applications/Docker.app/Contents/Resources/bin/docker-compose/docker-compose up -d
+docker exec -it speech-denoising-wavenet bash
+```
+
+Make sure your Docker container has enough memory: https://stackoverflow.com/a/50770267/1416886.
+
 Usage
 -----
 
@@ -39,6 +50,16 @@ A pre-trained model (best-performing model described in the paper) can be found 
 #### Denoising:
 
 Example: `THEANO_FLAGS=optimizer=fast_compile,device=gpu python main.py --mode inference --config sessions/001/config.json --noisy_input_path data/NSDTSEA/noisy_testset_wav --clean_input_path data/NSDTSEA/clean_testset_wav`
+
+##### Simple:
+
+Move your wav file to a folder name `input`. Then:
+
+```bash
+python main.py --mode inference --config sessions/001/config.json --noisy_input_path input --one_shot True
+```
+
+The output will be in `sessions/001/samples/...`.
 
 ###### Speedup
 To achieve faster denoising, one can increase the target-field length by use of the optional `--target_field_length` argument. This defines the amount of samples that are denoised in a single forward propagation, saving redundant calculations. In the following example, it is increased 10x that of when the model was trained, the batch_size is reduced to 4.

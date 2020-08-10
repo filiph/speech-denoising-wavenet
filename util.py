@@ -182,7 +182,7 @@ def load_wav(wav_path, desired_sample_rate):
 
 
 def write_wav(x, filename, sample_rate):
-
+    print("Writing WAV to " + filename)
     if type(x) != np.ndarray:
         x = np.array(x)
 
